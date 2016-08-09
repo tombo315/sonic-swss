@@ -25,6 +25,7 @@ private:
     sai_uint32_t m_portCount;
     map<set<int>, sai_object_id_t> m_portListLaneMap;
     map<string, Port> m_portList;
+    ProducerTable m_portMapTable;
 
     void doTask(Consumer &consumer);
     void doPortTask(Consumer &consumer);
