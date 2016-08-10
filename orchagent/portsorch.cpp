@@ -18,6 +18,7 @@ extern sai_hostif_api_t* sai_hostif_api;
 
 #define VLAN_PREFIX         "Vlan"
 #define DEFAULT_VLAN_ID     1
+#define PORT_ALIAS_SAI_MAP  "port_alias_sai_map"
 
 PortsOrch::PortsOrch(DBConnector *db, vector<string> tableNames) :
         Orch(db, tableNames), m_portMapTable(db, "PORT_MAP_TABLE")
@@ -201,7 +202,6 @@ void PortsOrch::doPortTask(Consumer &consumer)
 {
     SWSS_LOG_ENTER();
 
-    std::vector<FieldValueTuple> portAliasVector;
     std::vector<FieldValueTuple> portNameVector;
     auto it = consumer.m_toSync.begin();
     while (it != consumer.m_toSync.end())
@@ -280,10 +280,8 @@ void PortsOrch::doPortTask(Consumer &consumer)
                         {
                             /* Add port to port list */
                             m_portList[alias] = p;
-                            /* Record the port alias/name */
-                            FieldValueTuple portAlias(alias, LinkCache::getInstance().ifindexToName(p.m_ifindex));
-                            portAliasVector.push_back(portAlias);
-                            FieldValueTuple portName(alias, std::to_string(p.m_ifindex));
+                            /* Record the port {NAME: SAI_ID} */
+                            FieldValueTuple portName(alias, std::to_string(p.sai_object_id_t));
                             portNameVector.push_back(portName);
 
                             SWSS_LOG_NOTICE("Port is initialized alias:%s\n", alias.c_str());
@@ -320,8 +318,7 @@ void PortsOrch::doPortTask(Consumer &consumer)
 
         it = consumer.m_toSync.erase(it);
     }
-    m_portMapTable.set("port_name_alias_map", portAliasVector);
-    m_portMapTable.set("port_name_map", portNameVector);
+    m_portMapTable.set(PORT_ALIAS_SAI_MAP, portNameVector);
 }
 
 void PortsOrch::doVlanTask(Consumer &consumer)
