@@ -8,7 +8,6 @@
 #include "net/if.h"
 
 #include "logger.h"
-#include "linkcache.h"
 
 extern sai_switch_api_t *sai_switch_api;
 extern sai_port_api_t *sai_port_api;
