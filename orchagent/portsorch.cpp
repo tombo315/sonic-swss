@@ -281,7 +281,7 @@ void PortsOrch::doPortTask(Consumer &consumer)
                             /* Add port to port list */
                             m_portList[alias] = p;
                             /* Record the port {NAME: SAI_ID} */
-                            FieldValueTuple portName(alias, std::to_string(p.sai_object_id_t));
+                            FieldValueTuple portName(alias, std::to_string(p.m_port_id));
                             portNameVector.push_back(portName);
 
                             SWSS_LOG_NOTICE("Port is initialized alias:%s\n", alias.c_str());
