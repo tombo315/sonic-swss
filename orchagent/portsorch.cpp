@@ -282,7 +282,7 @@ void PortsOrch::doPortTask(Consumer &consumer)
                             /* Record the port {NAME: SAI_ID} */
                             FieldValueTuple portName(alias, std::to_string(p.m_port_id));
                             portNameVector.push_back(portName);
-
+                            m_portMapTable.set(PORT_ALIAS_SAI_MAP, portNameVector);
                             SWSS_LOG_NOTICE("Port is initialized alias:%s\n", alias.c_str());
 
                         }
@@ -317,7 +317,6 @@ void PortsOrch::doPortTask(Consumer &consumer)
 
         it = consumer.m_toSync.erase(it);
     }
-    m_portMapTable.set(PORT_ALIAS_SAI_MAP, portNameVector);
 }
 
 void PortsOrch::doVlanTask(Consumer &consumer)
