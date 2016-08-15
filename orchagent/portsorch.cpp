@@ -232,12 +232,6 @@ void PortsOrch::doPortTask(Consumer &consumer)
                 {
                     sai_object_id_t id = m_portListLaneMap[lane_set];
 
-                    std::cout << "Recording port: " << alias << "< - >" << std::to_string(id);
-                    /* Record the port {NAME: SAI_ID} */
-                    FieldValueTuple portName(alias, std::to_string(id));
-                    portNameVector.push_back(portName);
-                    m_portMapTable.set(PORT_ALIAS_SAI_MAP, portNameVector);
-
                     /* Determin if the port has already been initialized before */
                     if (m_portList.find(alias) != m_portList.end() && m_portList[alias].m_port_id == id)
                         SWSS_LOG_NOTICE("Port has already been initialized before alias:%s\n", alias.c_str());
@@ -253,6 +247,12 @@ void PortsOrch::doPortTask(Consumer &consumer)
                         {
                             /* Add port to port list */
                             m_portList[alias] = p;
+                            std::cout << "Recording port: " << alias << "< - >" << std::to_string(p.m_port_id);
+                            /* Record the port {NAME: SAI_ID} */
+                            FieldValueTuple portName(alias, std::to_string(p.m_port_id));
+                            portNameVector.push_back(portName);
+                            m_portMapTable.set(PORT_ALIAS_SAI_MAP, portNameVector);
+
                             SWSS_LOG_NOTICE("Port is initialized alias:%s\n", alias.c_str());
 
                         }
