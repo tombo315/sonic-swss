@@ -1,5 +1,6 @@
 #include "portsorch.h"
 
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <set>
@@ -264,6 +265,7 @@ void PortsOrch::doPortTask(Consumer &consumer)
                 {
                     sai_object_id_t id = m_portListLaneMap[lane_set];
 
+                    std::cout << "Recording port: " << alias << "< - >" << std::to_string(id);
                     /* Record the port {NAME: SAI_ID} */
                     FieldValueTuple portName(alias, std::to_string(id));
                     portNameVector.push_back(portName);
