@@ -169,7 +169,6 @@ void PortsOrch::doPortTask(Consumer &consumer)
 {
     SWSS_LOG_ENTER();
 
-    std::vector<FieldValueTuple> portNameVector;
     auto it = consumer.m_toSync.begin();
     while (it != consumer.m_toSync.end())
     {
@@ -247,14 +246,19 @@ void PortsOrch::doPortTask(Consumer &consumer)
                         {
                             /* Add port to port list */
                             m_portList[alias] = p;
-                            std::cout << "Recording port: " << alias << "< - >" << std::to_string(p.m_port_id);
-                            /* Record the port {NAME: SAI_ID} */
-                            FieldValueTuple portName(alias, std::to_string(p.m_port_id));
+
+                            /* Record the port {NAME: 0xSAI_ID} */
+                            std::vector<FieldValueTuple> portNameVector;
+                            std::stringstream formatStream;
+                            formatStream << std::hex << p.m_port_id;
+
+                            FieldValueTuple portName(alias, formatStream.str());
                             portNameVector.push_back(portName);
                             m_portMapTable.set(PORT_ALIAS_SAI_MAP, portNameVector);
 
-                            SWSS_LOG_NOTICE("Port is initialized alias:%s\n", alias.c_str());
+                            std::cout << "Recording port: " << alias << "< - >" << formatStream.str() << '\n';
 
+                            SWSS_LOG_NOTICE("Port is initialized alias:%s\n", alias.c_str());
                         }
                         else
                             SWSS_LOG_ERROR("Failed to initialize port alias:%s\n", alias.c_str());
