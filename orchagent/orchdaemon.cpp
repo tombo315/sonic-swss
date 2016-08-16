@@ -34,7 +34,8 @@ bool OrchDaemon::init()
     vector<string> ports_tables = {
         APP_PORT_TABLE_NAME,
         APP_VLAN_TABLE_NAME,
-        APP_LAG_TABLE_NAME
+        APP_LAG_TABLE_NAME,
+        "PORT_MAP_TABLE"
     };
 
     PortsOrch *ports_orch = new PortsOrch(m_applDb, ports_tables);
