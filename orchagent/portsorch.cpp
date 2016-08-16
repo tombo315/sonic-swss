@@ -250,7 +250,7 @@ void PortsOrch::doPortTask(Consumer &consumer)
                             /* Record the port {NAME: 0xSAI_ID} */
                             std::vector<FieldValueTuple> portNameVector;
                             std::stringstream formatStream;
-                            formatStream << std::hex << p.m_port_id;
+                            formatStream << std::hex << p.m_rif_id;
 
                             FieldValueTuple portName(alias, formatStream.str());
                             portNameVector.push_back(portName);
